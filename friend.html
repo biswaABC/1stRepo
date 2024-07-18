@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic-Tac-Toe</title>
+    <link rel="stylesheet" href="friend.css">
+</head>
+
+<body>
+    <div class="friend-input-wrapper">
+        <input type="text" placeholder="Player1 Name" maxlength="10" autocomplete="additional-name">
+        <input type="text" placeholder="Player2 Name" maxlength="10" autocomplete="additional-name">
+        <button onclick="play(this.parentNode)">Play</button>
+    </div>
+    <div class="TTT-wrapper" style="display: none;">
+        <div class="pName">
+            <p style="text-align: center;"></p>
+        </div>
+        <div class="container">
+            <div class="column">
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+            <div class="column">
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+            <div class="column">
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+        </div>
+        <div class="winner-wrapper">
+            <p></p>
+            <button onclick="playAgain()">Play Again</button>
+        </div>
+    </div>
+</body>
+<script>
+    let tictactoeCont = document.querySelector(".TTT-wrapper");
+    let playerNames = document.querySelectorAll(".friend-input-wrapper input");
+    let tttDiv = tictactoeCont.querySelectorAll(".container .column div");
+    let winnerField = tictactoeCont.querySelector(".winner-wrapper p");
+    let checkTurn = 0;
+    let winnerName = "";
+    let isWinnerDeclared = false;
+    
+    const play = (parent) => {
+        let container = tictactoeCont.querySelector(".container");
+        parent.style.display = "none";
+        tictactoeCont.style.display = "flex";
+        tictactoeCont.querySelector(".pName p").innerHTML = `❌<span style="color:red">${playerNames[0].value}</span> <span style="color:blue; font-size:12pt">Vs</span> <span style="color:green">${playerNames[1].value}⭕</span>`
+    }
+
+    const playAgain = () => {
+        checkTurn = 0;
+        winnerName = "";
+        isWinnerDeclared = false;
+        tttDiv.forEach((div, index) => {
+            div.innerText = "";
+        })
+        tictactoeCont.querySelector(".winner-wrapper").classList.remove("show");
+    }
+
+    const showWinner = () => {
+        isWinnerDeclared = true;
+        tictactoeCont.querySelector(".winner-wrapper").classList.add("show");
+        winnerField.innerText = `${winnerName} won!!!`
+    }
+
+    const matchDraw = () => {
+        tictactoeCont.querySelector(".winner-wrapper").classList.add("show");
+        winnerField.innerText = `Match Draw!!!`
+    }
+
+    const checkWinner = (index) => {
+        winnerName = checkTurn % 2 === 0 ? playerNames[0].value : playerNames[1].value;
+        switch (index) {
+            case 0:
+                tttDiv[3].innerText === tttDiv[index].innerText && tttDiv[6].innerText === tttDiv[index].innerText ? showWinner() :
+                    tttDiv[1].innerText === tttDiv[index].innerText && tttDiv[2].innerText === tttDiv[index].innerText ? showWinner() :
+                        tttDiv[4].innerText === tttDiv[index].innerText && tttDiv[8].innerText === tttDiv[index].innerText ? showWinner() : "";
+                break;
+            case 1:
+                tttDiv[0].innerText === tttDiv[index].innerText && tttDiv[2].innerText === tttDiv[index].innerText ? showWinner() :
+                    tttDiv[4].innerText === tttDiv[index].innerText && tttDiv[7].innerText === tttDiv[index].innerText ? showWinner() : "";
+                break;
+            case 2:
+                tttDiv[0].innerText === tttDiv[index].innerText && tttDiv[1].innerText === tttDiv[index].innerText ? showWinner() :
+                    tttDiv[5].innerText === tttDiv[index].innerText && tttDiv[8].innerText === tttDiv[index].innerText ? showWinner() :
+                        tttDiv[4].innerText === tttDiv[index].innerText && tttDiv[6].innerText === tttDiv[index].innerText ? showWinner() : "";
+                break;
+            case 3:
+                tttDiv[0].innerText === tttDiv[index].innerText && tttDiv[6].innerText === tttDiv[index].innerText ? showWinner() :
+                    tttDiv[4].innerText === tttDiv[index].innerText && tttDiv[5].innerText === tttDiv[index].innerText ? showWinner() : "";
+                break;
+            case 4:
+                tttDiv[3].innerText === tttDiv[index].innerText && tttDiv[5].innerText === tttDiv[index].innerText ? showWinner() :
+                    tttDiv[1].innerText === tttDiv[index].innerText && tttDiv[7].innerText === tttDiv[index].innerText ? showWinner() :
+                        tttDiv[0].innerText === tttDiv[index].innerText && tttDiv[8].innerText === tttDiv[index].innerText ? showWinner() :
+                            tttDiv[2].innerText === tttDiv[index].innerText && tttDiv[6].innerText === tttDiv[index].innerText ? showWinner() : "";
+                break;
+            case 5:
+                tttDiv[3].innerText === tttDiv[index].innerText && tttDiv[4].innerText === tttDiv[index].innerText ? showWinner() :
+                    tttDiv[2].innerText === tttDiv[index].innerText && tttDiv[8].innerText === tttDiv[index].innerText ? showWinner() : "";
+                break;
+            case 6:
+                tttDiv[7].innerText === tttDiv[index].innerText && tttDiv[8].innerText === tttDiv[index].innerText ? showWinner() :
+                    tttDiv[0].innerText === tttDiv[index].innerText && tttDiv[3].innerText === tttDiv[index].innerText ? showWinner() :
+                        tttDiv[2].innerText === tttDiv[index].innerText && tttDiv[4].innerText === tttDiv[index].innerText ? showWinner() : "";
+                break;
+            case 7:
+                tttDiv[6].innerText === tttDiv[index].innerText && tttDiv[8].innerText === tttDiv[index].innerText ? showWinner() :
+                    tttDiv[1].innerText === tttDiv[index].innerText && tttDiv[4].innerText === tttDiv[index].innerText ? showWinner() : "";
+                break;
+            case 8:
+                tttDiv[6].innerText === tttDiv[index].innerText && tttDiv[7].innerText === tttDiv[index].innerText ? showWinner() :
+                    tttDiv[2].innerText === tttDiv[index].innerText && tttDiv[5].innerText === tttDiv[index].innerText ? showWinner() :
+                        tttDiv[0].innerText === tttDiv[index].innerText && tttDiv[4].innerText === tttDiv[index].innerText ? showWinner() : "";
+                break;
+        }
+        if(checkTurn === 8 && !isWinnerDeclared){
+            matchDraw()
+        }
+    }
+
+    if (tttDiv.length > 0) {
+        tttDiv.forEach((div, index) => {
+            div.addEventListener("click", () => {
+                checkTurn % 2 === 0 ? div.innerText = "❌" : div.innerText = "⭕";
+                checkTurn >= 4 ? checkWinner(index) : "";
+                checkTurn++;
+            })
+        })
+    }
+</script>
+
+</html>
